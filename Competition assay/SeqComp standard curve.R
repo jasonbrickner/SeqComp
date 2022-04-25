@@ -11,8 +11,9 @@ library(stringr)
 
 #draw peak heights and calculate normalized ratios for each strain, condition and time point.
 #Step 1: collect data for WT cells act vs react
-fnames <- as.character(list.files("~/Box/ Jason/papers in preparation/Bethany Memory/Figure 1/Fitness pRS306 WT Standard Curve/Raw Data/"))
-std_LUT <- read.csv("~/Box/ Jason/papers in preparation/Bethany Memory/Figure 1/Fitness pRS306 WT Standard Curve/Scripts/StdCurve LUT for paper.csv")
+setwd("~/Downloads/SeqComp-main/Competition assay/")
+fnames <- as.character(list.files("SeqComp standard curve raw data/"))
+std_LUT <- read.csv("StdCurve LUT.csv")
 std_LUT$file <- paste(std_LUT$filename, ".ab1", sep = "")
 SNPdf <- data.frame(file = character(),
                       A = numeric(),
@@ -22,8 +23,8 @@ SNPdf <- data.frame(file = character(),
 for(i in 1:length(fnames)){
     SNPdf[i,1] <- fnames[i]
     sub_LUT <- subset(std_LUT, file == fnames[i])
-    df <- read.abif(paste("~/Box/ Jason/papers in preparation/Bethany Memory/Figure 1/Fitness pRS306 WT Standard Curve/Raw Data/", fnames[i], sep = ""))@data
-    seq <- sangerseq(read.abif(paste("~/Box/ Jason/papers in preparation/Bethany Memory/Figure 1/Fitness pRS306 WT Standard Curve/Raw Data/", fnames[i], sep = "")))
+    df <- read.abif(paste("SeqComp standard curve raw data/", fnames[i], sep = ""))@data
+    seq <- sangerseq(read.abif(paste("SeqComp standard curve raw data/", fnames[i], sep = "")))
     position <- as.numeric(str_locate_all(pattern ="GGGTTTTCCC", primarySeq(seq, string = "TRUE"))[[1]][1,2])+1
     window <- round((df$PLOC.2[position]-df$PLOC.2[position-1])/4, 0)
     tracestart <- df$PLOC.2[(position)]-window
@@ -52,4 +53,4 @@ standard_cuvrve <-   ggplot()+
           axis.text = element_text(family = "Arial", size = 12, color = "#333333"),
           legend.position = "none")
 
-ggsave("~/Box/ Jason/papers in preparation/Bethany Memory/Figure 1/panels/standard curve.png", standard_cuvrve, width = 3, height = 3)
+ggsave("standard curve.png", standard_cuvrve, width = 3, height = 3)
