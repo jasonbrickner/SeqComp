@@ -1,9 +1,5 @@
 #This script finds the peak height of T and G from input ab files, calculates a ratio of the strains and normalizes based on the initial ratio 
-#and corrects for initial densities not equal to 1. The script also plots these ratios to generate Figure 1D.
-#Required packages: 
-#stringr (CRAN) and sangerseqR (https://bioconductor.org/packages/release/bioc/html/sangerseqR.html)
-#BiocManager::install("sangerseqR")
-
+#and corrects for initial densities not equal to 1. The script also plots these ratios to generate a standard curve.
 library(plyr)
 library(tidyverse)  
 library(sangerseqR)
